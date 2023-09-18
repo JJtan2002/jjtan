@@ -92,4 +92,13 @@ function remove_duplicatesb(xs) {
 
     }
 }
-remove_duplicatesb(list(1,1,1,2,3));
+function subsets(xs) {
+    if (is_null(xs)) {
+        return list(null);
+    } else {
+        const rest = tail(xs);
+        return accumulate((x,y) => append(subsets(list(head(xs)), y)), null, xs);
+    }
+}
+
+append(list(list(1)), list(list(2)));
