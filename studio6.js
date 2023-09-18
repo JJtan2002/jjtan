@@ -36,6 +36,15 @@ function remove_duplicates(xs) {
     }
     return helper(xs, 0, null);
 }
+
+function remove_duplicatesa(xs) { // input a list of numbers, output a list of numbers
+    if (is_null(xs)) {
+        return null;
+    } else {
+        const rest = filter(x=>x!==head(xs), xs); // the list of remaining elements, not containing head(xs)
+        return pair(head(xs), remove_duplicates(rest));
+    }
+}
 function makeup_amount(x, coins) {
     if (x === 0) {
         return list(null);
