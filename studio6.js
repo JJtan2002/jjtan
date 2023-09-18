@@ -96,9 +96,15 @@ function subsets(xs) {
     if (is_null(xs)) {
         return list(null);
     } else {
-        const rest = tail(xs);
-        return accumulate((x,y) => append(subsets(list(head(xs)), y)), null, xs);
+        const rest = subsets(tail(xs));
+        return append(rest, map(x=>pair(head(xs), x), rest));
     }
 }
 
-append(list(list(1)), list(list(2)));
+function permutate(xs) {
+    return is_null(xs)
+    ? list(null)
+    : accumulate(append, null, 
+    map(x=> map(p=> pair(x, p), permutate(remove(x,xs))), xs));
+}
+permutate(list(1));
