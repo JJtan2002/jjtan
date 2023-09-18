@@ -23,9 +23,6 @@ function my_append(a, b) {
 }
 
 
-function my_mapa(f, xs) {
-    return accumulate( (x,y) => append(list(f(x)), y), null, xs);
-}
 function remove_duplicates(xs) {
     function helper(xs, i, result) {
         if (i>=length(xs)) {
@@ -52,16 +49,47 @@ function makeup_amount(x, coins) {
         return null;
     } else {
         // Combinations that do not use the head coin.
-        const combi_A = makeup_amount(x,tail(coins));
+        const combi_A = makeup_amount(x,tail(coins)); // a list of lists
 
         // Combinations that do not use the head coin 
         // for the remaining amount.
-        const combi_B = makeup_amount(x - head(coins), tail(coins));
+        const combi_B = makeup_amount(x - head(coins), tail(coins)); //a list of lists
 
         // Combinations that use the head coin.
         const combi_C = map(x => pair(head(coins), x), combi_B);
+        // for each list in B, add the head coin to its head.
 
-        return append(combi_A, combi_C);
+        return append(combi_A, combi_C); // append two lists of lists, to get one list of lists.
     }
 }
-makeup_amount(22, list(20, 20, 2));
+
+function my_map(f, xs) { // input f and xs, return a list
+    if (is_null(xs)) {
+        return null;
+    } else {
+        return accumulate((x,y)=>pair(f(x), y), null, xs);
+    }
+}
+member(7, list(1,2,3,4,5));
+function is_odd(x) {
+    return x%2===1;
+}
+
+function my_filter(f, xs) { // imput f and xs, return a list
+    if (is_null(xs)) {
+        return null;
+    }    else {
+        return accumulate((x,y) => f(x) ? pair(x, y) : append(null, y), null, xs);
+    }
+}
+function remove_duplicatesb(xs) {
+    if (is_null(xs)) {
+        return null;
+    } else {
+        const rest = accumulate((x,y) => (x=>x!==head(xs))(x) ? pair(x, y) : append(null, y), 
+        null, xs);
+        return pair(head(xs), remove_duplicatesb(rest));
+
+    }
+}
+remove_duplicatesb(list(1,1,1,2,3));
