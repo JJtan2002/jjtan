@@ -107,4 +107,36 @@ function permutate(xs) {
     : accumulate(append, null, 
     map(x=> map(p=> pair(x, p), permutate(remove(x,xs))), xs));
 }
-permutate(list(1));
+
+function insert_cmp(x, xs, cmp) {
+return is_null(xs)
+? list(x)
+: cmp(x, head(xs))
+? pair(x, xs)
+: pair(head(xs), insert_cmp(x, tail(xs), cmp));
+}
+function insertion_sort_cmp(xs, cmp) {
+return is_null(xs)
+? xs
+: insert_cmp(head(xs),
+insertion_sort_cmp(tail(xs), cmp),
+cmp);
+}
+function cmp(x, y) {
+    if (x%2===0) {
+        if (y%2===1) {
+            return true;
+        } else {
+            return x<y;
+        }
+    }
+    else {
+        if (y%2===0) {
+            return false;
+        }
+        else {
+            return x>y;
+        }
+    }    
+}
+insertion_sort_cmp(list(6, 3, 8, 5, 1, 9, 6, 4, 2, 7), cmp);
