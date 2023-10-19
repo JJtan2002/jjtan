@@ -1,26 +1,31 @@
-function linear_search(A, v) {
-    const len = array_length(A);
-    let i = 0;
-    while (i < len && A[i] !== v) {
-        i = i + 1;
+const mem = [];
+
+function read(n, k) {
+    return mem[n] === undefined
+           ? undefined
+           : mem[n][k];
+}
+
+function write(n, k, value) {
+    if (mem[n] === undefined) {
+        mem[n] = [];
     }
-    return (i < len);
+    mem[n][k] = value;
 }
-function make_search(A) {
-    return x => linear_search(A, x);
-}
-
-function make_optimised_search(A) {
-    let dict = [];
-    for (let i = 0; i<array_length(A); i = i+1) {
-        dict[A[i]] = i;
+let count = 0;
+function mchoose(n, k) {
+    count = count+1;
+    if (read(n, k) !== undefined) {
+        return read(n, k);
+    } else {
+        const result = k > n
+                       ? 0
+                       : k === 0 || k === n
+                       ? 1
+                       : mchoose(n - 1, k) + mchoose(n - 1, k - 1);
+        write(n, k, result);
+        return result;
     }
-    return x => dict[x]!==undefined ? true : false;
 }
-
-//const my_array = [3,41,20,1,5,16,4,0,14,6,17,8,4,0,2];
-//const my_search = make_optimised_search(my_array);
-
-//my_search(6);
-
-function fib
+mchoose(14, 7);
+count;
